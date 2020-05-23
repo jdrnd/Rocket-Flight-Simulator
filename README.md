@@ -18,6 +18,8 @@ A python application that uses Euler's method to computationally solve the nonli
 ### Usage
 `python3 rocket_flight_simulator/main.py`
 
+If you get a Qt error about not being able to find the Qt platform plugin xcb, run `sudo apt-get install libxkbcommon-x11-0`.
+
 
 ### Citations
 http://www.dtic.mil/dtic/tr/fulltext/u2/729858.pdf - for coefficient of drag of a parachute

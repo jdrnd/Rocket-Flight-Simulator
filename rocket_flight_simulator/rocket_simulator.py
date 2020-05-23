@@ -26,6 +26,7 @@ class RocketSimulator(QtCore.QObject):
         # Set imported parameters as properties
         for parameter in self.parameters:
             setattr(self, parameter, self.parameters[parameter])
+
         # use for threadsafe commnications with the GUI thread
         self.mutex = QMutex()
 
@@ -33,7 +34,7 @@ class RocketSimulator(QtCore.QObject):
         self.initial_pressure = self.atmosphere.get_pressure_by_height(self.launch_height)
 
         # TODO Error analysis vs. ticksize
-        self.ticksize = 0.0001
+        self.ticksize = 0.01
 
         self.time = 0
         self.height = self.launch_height
@@ -55,7 +56,6 @@ class RocketSimulator(QtCore.QObject):
 
 
     def run_simulation(self):
-
         while self.height >= self.launch_height:
             self.run_tick()
         print(self.max_height, self.max_velocity, self.max_acceleration)
@@ -112,11 +112,11 @@ class RocketSimulator(QtCore.QObject):
 
     def thrust_force(self):
         if self.time < self.burn_length:
-            return self.thruster.get_thrust_at_time(self.time) + self.get_vacuum_thrust()
+            return self.thruster.get_thrust_at_time(self.time)  #+ self.get_vacuum_thrust()
         else:
             return 0
-    # Max no VT: 905.0415775968264
-    # Max w/ VT:
+
+    # Vacuum thrust cannot be calculated without knowing the exhaust pressure of the motor
     def get_vacuum_thrust(self):
         return (self.initial_pressure - self.atmosphere.get_pressure_by_height(self.height)) * self.exit_area
 
