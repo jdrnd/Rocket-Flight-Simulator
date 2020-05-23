@@ -13,7 +13,6 @@ class Thruster(object):
                 self._data.append(line)
 
         self.measurement_interval = float(self._data[1]['time']) - float(self._data[0]['time'])
-        print(self.measurement_interval)
 
 
     # Assume regulatly spaced intervals in the data input file

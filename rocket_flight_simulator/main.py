@@ -4,12 +4,12 @@ import pyqtgraph as pg
 import sys
 from copy import copy
 
-from rocket_simulator import RocketSimulator
+from rocket_flight_simulator.rocket_simulator import RocketSimulator
 
 
 def init_charts():
     global layout, height_curve, velocity_curve, acceleration_curve
-    height_plot = pg.PlotWidget(title="<h1> Height (AGL) </h1>")
+    height_plot = pg.PlotWidget(title="<h1> Height (m AGL) </h1>")
     height_curve = height_plot.plot(pen=(255,0,0)) # Pure red, rgb value
     height_plot.enableAutoRange('xy', True)  # Keep auto-scrolling and size adjustments
 
@@ -17,6 +17,7 @@ def init_charts():
     velocity_curve = velocity_plot.plot(pen=(0,255,0))
     velocity_plot.enableAutoRange('xy', True)
 
+    # TODO add a warning if acceleration or speed is too high
     acceleration_plot = pg.PlotWidget(title="<h1> Acceleration (m/s^2) </h1>")
     acceleration_curve = acceleration_plot.plot(pen=(0,150,255))
     acceleration_plot.enableAutoRange('xy', True)
@@ -26,11 +27,16 @@ def init_charts():
     layout.addWidget(velocity_plot, 1, 1, 1, 1)
     layout.addWidget(acceleration_plot, 2, 1, 1, 1)
 
+# TODO add a button to refresh and a text box to select parameter files
 def init_param_list():
     global layout
     params = QtGui.QGridLayout()
 
-    i = 0
+    title_label = QtGui.QLabel()
+    title_label.setText("<b> Rocket Parameters </b>")
+    params.addWidget(title_label, 0, 0)
+
+    i = 1
     for param in simulator.parameters:
         param_text = ' '.join(param.split('_')).title()
 
@@ -84,14 +90,13 @@ def update():
     velocity_curve.setData(sim_times, sim_velocities)
     acceleration_curve.setData(sim_times, sim_accelerations)
 
-
+# TODO refactor so that these are not globals
 # Main
 app = QtGui.QApplication([])
 simulator = RocketSimulator(ticksize=0.0001)
-
 win = QtGui.QWidget()
 
-win.resize(1000,600)
+win.resize(1000,600) # TODO see if there are auto-sizing options
 win.setWindowTitle('Rocket Simulator')
 layout = QtGui.QGridLayout()
 win.setLayout(layout)
@@ -100,11 +105,7 @@ pg.setConfigOptions(antialias=True)
 
 init_charts()
 init_param_list()
-
 win.show()
-
-
-
 
 sim_times = []
 sim_heights = []
@@ -117,7 +118,6 @@ simulator.new_data.connect(update_values)
 timer = QtCore.QTimer()
 timer.timeout.connect(update)
 timer.start(10) # Decrease this if more performance issues
-
 
 run_simulation()
 

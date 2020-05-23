@@ -4,8 +4,8 @@ import json
 import numpy as np
 from time import sleep
 
-from atmosphere import Atmosphere
-from thruster import Thruster
+from rocket_flight_simulator.atmosphere import Atmosphere
+from rocket_flight_simulator.thruster import Thruster
 
 class RocketSimulator(QtCore.QObject):
     R_EARTH = 6371000 # meters
@@ -58,7 +58,6 @@ class RocketSimulator(QtCore.QObject):
     def run_simulation(self):
         while self.height >= self.launch_height:
             self.run_tick()
-        print(self.max_height, self.max_velocity, self.max_acceleration)
 
     def run_tick(self):
 
@@ -118,7 +117,7 @@ class RocketSimulator(QtCore.QObject):
 
     # Vacuum thrust cannot be calculated without knowing the exhaust pressure of the motor
     def get_vacuum_thrust(self):
-        return (self.initial_pressure - self.atmosphere.get_pressure_by_height(self.height)) * self.exit_area
+        return (self.initial_pressure - self.atmosphere.get_pressure_by_height(self.height)) * self.exit_area # this is wrong
 
     def update_mass(self):
         if self.time > self.burn_length:

@@ -20,7 +20,6 @@ class Atmosphere(object):
                 index = self._get_index_by_height(height)
 
                 if index < 0 or index > len(self._data):
-                    print('Index out of bounds: ', index)
                     return -1
 
                 # Perform a linear approximation if between terms

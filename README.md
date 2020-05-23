@@ -4,22 +4,17 @@ A python application that uses Euler's method to computationally solve the nonli
 
 ![Simulator](https://image.prntscr.com/image/Ll-SqvFVRhaifLjRa7ZVhg.png "Flight Simulator Program")
 
+This program was originally developed as a project for MTE 204 (Numerical Methods) at the University of Waterloo in Fall 2019.
 
-### Installation
+### Installation/Setup
 `pip3 install -r requirements.txt`
 
-### Libraries used
-* `pyqt5` - Qt with python bindings to build the GUI
-* `pyqtgraph` - Graphing module for pyqt to render graphs
-* `numpy` - Array data types for graphing (requirement of `pyqtgraph`)
-
-
-
 ### Usage
-`python3 rocket_flight_simulator/main.py`
+`python3 -m rocket_flight_simulator`
 
 If you get a Qt error about not being able to find the Qt platform plugin xcb, run `sudo apt-get install libxkbcommon-x11-0`.
 
+If using to estimate performance of a custom rocket, modify the parameters and data in `parameters.json` and `thrust.csv`. The paramters currently in both files are for a custom rocket with a G80T-14A motor. `atmosphere.csv` contains atmospheric data taken from the US Standard Atmosphere and should not be modified.
 
-### Citations
-http://www.dtic.mil/dtic/tr/fulltext/u2/729858.pdf - for coefficient of drag of a parachute
+### Running tests
+`python3 -m unittest`
